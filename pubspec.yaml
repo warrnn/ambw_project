@@ -1,6 +1,6 @@
-name: ambw_project
-description: "A new Flutter project."
-publish_to: 'none'
+name: Telehealth
+description: "Visit reservation app"
+publish_to: "none"
 version: 0.1.0
 
 environment:
@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_dotenv: ^6.0.0
   supabase_flutter: ^2.10.3
 
 dev_dependencies:
@@ -18,3 +19,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - .env
