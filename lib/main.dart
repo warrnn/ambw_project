@@ -1,4 +1,5 @@
-import 'package:Telehealth/services/supabase_service.dart';
+import 'package:telehealth/authentication/auth_gate.dart';
+import 'package:telehealth/service/supabase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -16,8 +17,6 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(body: Center(child: Text('Hello World!'))),
-    );
+    return MaterialApp(debugShowCheckedModeBanner: false, home: AuthGate());
   }
 }
