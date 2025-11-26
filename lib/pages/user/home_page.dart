@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:telehealth/authentication/auth_service.dart';
 import 'package:telehealth/components/home_visit_schedule_card.dart';
 import 'package:telehealth/components/menu_card.dart';
+import 'package:telehealth/pages/user/profile_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -112,7 +113,12 @@ class _HomePageState extends State<HomePage> {
                         Icons.person_outlined,
                         'Profil\nSaya',
                         onTap: () {
-                          authService.logout(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ProfilePage(),
+                            ),
+                          );
                         },
                       ),
                     ],
