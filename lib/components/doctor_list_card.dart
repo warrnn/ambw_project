@@ -4,13 +4,13 @@ import 'package:telehealth/pages/user/visit_form_page.dart';
 class DoctorListCard extends StatelessWidget {
   final String doctorPhotoUrl;
   final String doctorName;
-  final String doctorSpeciality;
+  final String doctorSpecialization;
   final String hospitalName;
 
   const DoctorListCard(
     this.doctorPhotoUrl,
     this.doctorName,
-    this.doctorSpeciality,
+    this.doctorSpecialization,
     this.hospitalName, {
     super.key,
   });
@@ -18,7 +18,9 @@ class DoctorListCard extends StatelessWidget {
   void goToVisitFormPage(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const VisitFormPage()),
+      MaterialPageRoute(
+        builder: (context) => VisitFormPage(doctorName: doctorName, doctorSpecialization: doctorSpecialization, hospitalName: hospitalName)
+      ),
     );
   }
 
@@ -67,7 +69,7 @@ class DoctorListCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      doctorSpeciality,
+                      doctorSpecialization,
                       style: TextStyle(fontSize: 12, color: Colors.blue),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -88,7 +90,7 @@ class DoctorListCard extends StatelessWidget {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.blue,
-              minimumSize: const Size(double.infinity, 40),
+              minimumSize: const Size(double.infinity, 44),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),

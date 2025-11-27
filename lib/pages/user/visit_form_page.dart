@@ -5,7 +5,16 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:telehealth/pages/user/visit_ticket_page.dart';
 
 class VisitFormPage extends StatefulWidget {
-  const VisitFormPage({super.key});
+  final String doctorName;
+  final String doctorSpecialization;
+  final String hospitalName;
+
+  const VisitFormPage({
+    super.key,
+    required this.doctorName,
+    required this.doctorSpecialization,
+    required this.hospitalName,
+  });
 
   @override
   State<VisitFormPage> createState() => _VisitFormPageState();
@@ -67,7 +76,7 @@ class _VisitFormPageState extends State<VisitFormPage> {
                       Text('Dokter yang dipilih:'),
                       SizedBox(height: 20),
                       Text(
-                        'Dr. Tirta',
+                        widget.doctorName,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -84,7 +93,7 @@ class _VisitFormPageState extends State<VisitFormPage> {
                             color: Colors.grey[600],
                           ),
                           SizedBox(width: 8),
-                          Text('Spesialis Sakit Hati'),
+                          Text(widget.doctorSpecialization),
                         ],
                       ),
                       SizedBox(height: 8),
@@ -96,7 +105,7 @@ class _VisitFormPageState extends State<VisitFormPage> {
                             color: Colors.grey[600],
                           ),
                           SizedBox(width: 8),
-                          Text('National Hospital'),
+                          Text(widget.hospitalName),
                         ],
                       ),
                     ],

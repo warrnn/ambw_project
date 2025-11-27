@@ -1,3 +1,4 @@
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:telehealth/authentication/auth_gate.dart';
 import 'package:telehealth/service/supabase_service.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ void main() async {
 
   await dotenv.load(fileName: '.env');
   await SupabaseService.init();
+  await initializeDateFormatting('id_ID', null);
 
   runApp(const MainApp());
 }

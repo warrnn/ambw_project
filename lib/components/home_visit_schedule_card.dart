@@ -5,8 +5,7 @@ class HomeVisitScheduleCard extends StatefulWidget {
   final String doctorSpecialization;
   final String hospitalName;
   final String visitDate;
-  final String visitTime;
-  final String visitStatus;
+  final bool visitStatus;
   final String chiefComplaint;
 
   const HomeVisitScheduleCard({
@@ -15,7 +14,6 @@ class HomeVisitScheduleCard extends StatefulWidget {
     required this.doctorSpecialization,
     required this.hospitalName,
     required this.visitDate,
-    required this.visitTime,
     required this.visitStatus,
     required this.chiefComplaint,
   });
@@ -29,7 +27,7 @@ class _HomeVisitScheduleCardState extends State<HomeVisitScheduleCard> {
 
   @override
   Widget build(BuildContext context) {
-    _statusBackgroundColor = widget.visitStatus == 'Pending' ? Colors.amber : Colors.green;
+    _statusBackgroundColor = widget.visitStatus ? Colors.green : Colors.amber;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -59,7 +57,7 @@ class _HomeVisitScheduleCardState extends State<HomeVisitScheduleCard> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  widget.visitStatus,
+                  widget.visitStatus ? 'Dikonfimasi' : 'Pending',
                   style: TextStyle(fontSize: 12, color: Colors.white),
                 ),
               ),
@@ -70,7 +68,7 @@ class _HomeVisitScheduleCardState extends State<HomeVisitScheduleCard> {
             alignment: Alignment.centerLeft,
             child: Text(
               widget.doctorSpecialization,
-              style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+              style: TextStyle(fontSize: 14, color: Colors.blue),
             ),
           ),
           SizedBox(height: 16),
@@ -78,19 +76,21 @@ class _HomeVisitScheduleCardState extends State<HomeVisitScheduleCard> {
             children: [
               Icon(Icons.calendar_month, size: 16),
               SizedBox(width: 8),
-              Text(widget.visitDate, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-              SizedBox(width: 16),
-              Icon(Icons.access_time, size: 16),
-              SizedBox(width: 8),
-              Text(widget.visitTime, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+              Text(
+                widget.visitDate.toString(),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
             ],
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 8),
           Row(
             children: [
               Icon(Icons.local_hospital_outlined, size: 16),
               SizedBox(width: 8),
-              Text(widget.hospitalName, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+              Text(
+                widget.hospitalName,
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
             ],
           ),
           SizedBox(height: 16),
@@ -115,17 +115,25 @@ class _HomeVisitScheduleCardState extends State<HomeVisitScheduleCard> {
                     ),
                   ),
                 ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
-                    child: Text(
-                      widget.chiefComplaint,
-                      style: TextStyle(fontSize: 14, color: Colors.black),
-                    ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: Text(
+                          widget.chiefComplaint,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],

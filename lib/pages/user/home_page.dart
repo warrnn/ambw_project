@@ -1,11 +1,13 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:telehealth/authentication/auth_service.dart';
 import 'package:telehealth/components/home_visit_schedule_card.dart';
 import 'package:telehealth/components/menu_card.dart';
 import 'package:telehealth/pages/user/doctor_list_page.dart';
 import 'package:telehealth/pages/user/profile_page.dart';
+import 'package:telehealth/service/visit_ticket_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -150,45 +152,43 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
                   Expanded(
-                    child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      child: Column(
-                        children: [
-                          HomeVisitScheduleCard(
-                            doctorName: "Dr. Tirta",
-                            doctorSpecialization: "Spesialis Penyakit Dalam",
-                            hospitalName: "National Hospital",
-                            visitDate: "01 Januari 2025",
-                            visitTime: "08:00",
-                            visitStatus: "Dikonfirmasi",
-                            chiefComplaint: "Sakit perut",
+                    child: FutureBuilder(
+                      future: VisitTicketService()
+                          .getAllPendingUserVisitTickets(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+
+                        if (snapshot.hasError) {
+                          return Center(
+                            child: Text("Error: ${snapshot.error}"),
+                          );
+                        }
+
+                        final pendingVisitTickets = snapshot.data ?? [];
+
+                        return SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          child: Column(
+                            children: pendingVisitTickets.map((ticket) {
+                              return HomeVisitScheduleCard(
+                                doctorName: ticket.doctor.name,
+                                doctorSpecialization: ticket.doctor.specialization,
+                                hospitalName: ticket.doctor.hospital,
+                                visitDate: DateFormat('d MMMM yyyy', 'id_ID').format(ticket.visitDate),
+                                visitStatus: ticket.status,
+                                chiefComplaint: ticket.chiefComplaint,
+                              );
+                            }).toList(),
                           ),
-                          SizedBox(height: 16),
-                          HomeVisitScheduleCard(
-                            doctorName: "Dr. Tirta",
-                            doctorSpecialization: "Spesialis Penyakit Dalam",
-                            hospitalName: "National Hospital",
-                            visitDate: "01 Januari 2025",
-                            visitTime: "08:00",
-                            visitStatus: "Pending",
-                            chiefComplaint: "Sakit perut",
-                          ),
-                          SizedBox(height: 16),
-                          HomeVisitScheduleCard(
-                            doctorName: "Dr. Tirta",
-                            doctorSpecialization: "Spesialis Penyakit Dalam",
-                            hospitalName: "National Hospital",
-                            visitDate: "01 Januari 2025",
-                            visitTime: "08:00",
-                            visitStatus: "Pending",
-                            chiefComplaint: "Sakit perut",
-                          ),
-                          SizedBox(height: 20),
-                        ],
-                      ),
+                        );
+                      },
                     ),
                   ),
                 ],

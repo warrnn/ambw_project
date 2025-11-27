@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:telehealth/components/doctor_list_card.dart';
+import 'package:telehealth/service/doctor_service.dart';
 
 class DoctorListPage extends StatefulWidget {
   const DoctorListPage({super.key});
@@ -23,31 +24,40 @@ class _DoctorListPageState extends State<DoctorListPage> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: BoxDecoration(color: Colors.white),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            padding: EdgeInsets.all(24.0),
-            child: Column(
-              children: [
-                for (int i = 0; i < 10; i++)
-                  Column(
+      body: SafeArea(
+        child: FutureBuilder(
+          future: DoctorService().getAllDoctors(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (snapshot.hasError) {
+              return Center(child: Text("Error: ${snapshot.error}"));
+            }
+
+            final doctors = snapshot.data ?? [];
+
+            return SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                children: doctors.map((doctor) {
+                  return Column(
                     children: [
                       DoctorListCard(
-                        "https://static.vecteezy.com/system/resources/thumbnails/026/375/249/small/ai-generative-portrait-of-confident-male-doctor-in-white-coat-and-stethoscope-standing-with-arms-crossed-and-looking-at-camera-photo.jpg",
-                        "Dr. Tirta ${i + 1}",
-                        "Spesialis Sakit Hati",
-                        "National Hospital",
+                        doctor.photoUrl,
+                        doctor.name,
+                        doctor.specialization,
+                        doctor.hospital,
                       ),
                       const SizedBox(height: 16),
                     ],
-                  ),
-              ],
-            ),
-          ),
+                  );
+                }).toList(),
+              ),
+            );
+          },
         ),
       ),
     );
