@@ -6,6 +6,7 @@ import 'package:telehealth/authentication/auth_service.dart';
 import 'package:telehealth/components/home_visit_schedule_card.dart';
 import 'package:telehealth/components/menu_card.dart';
 import 'package:telehealth/pages/user/doctor_list_page.dart';
+import 'package:telehealth/pages/user/history_page.dart';
 import 'package:telehealth/pages/user/profile_page.dart';
 import 'package:telehealth/service/visit_ticket_service.dart';
 
@@ -23,6 +24,13 @@ class _HomePageState extends State<HomePage> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const DoctorListPage()),
+    );
+  }
+
+  void goToHistoryPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const HistoryPage()),
     );
   }
 
@@ -120,9 +128,7 @@ class _HomePageState extends State<HomePage> {
                       MenuCard(
                         Icons.history,
                         'Riwayat\nKunjungan',
-                        onTap: () {
-                          log('Riwayat Kunjungan');
-                        },
+                        onTap: () => goToHistoryPage(context),
                       ),
                       MenuCard(
                         Icons.person_outlined,
