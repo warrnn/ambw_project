@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:telehealth/components/doctor_list_card.dart';
-import 'package:telehealth/components/home_visit_schedule_card.dart';
+import 'package:intl/intl.dart';
 import 'package:telehealth/components/visit_history_card.dart';
+import 'package:telehealth/service/visit_ticket_service.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
@@ -32,30 +32,34 @@ class _HistoryPageState extends State<HistoryPage> {
         child: SafeArea(
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
-            padding: EdgeInsets.all(24.0),
-            child: Column(
-              children: [
-                VisitHistoryCard(
-                  doctorName: "Dr. Tirta",
-                  doctorSpecialization: "Spesialis Penyakit Dalam",
-                  hospitalName: "National Hospital",
-                  visitDate: "01 Januari 2025",
-                  visitTime: "08:00",
-                  visitStatus: "Dikonfirmasi",
-                  chiefComplaint: "Sakit perut",
-                ),
-                SizedBox(height: 16),
-                VisitHistoryCard(
-                  doctorName: "Dr. Tirta",
-                  doctorSpecialization: "Spesialis Penyakit Dalam",
-                  hospitalName: "National Hospital",
-                  visitDate: "01 Januari 2025",
-                  visitTime: "08:00",
-                  visitStatus: "Pending",
-                  chiefComplaint: "Sakit perut",
-                ),
-                SizedBox(height: 20),
-              ],
+            padding: EdgeInsets.symmetric(vertical: 24, horizontal: 4),
+            child: FutureBuilder(
+              future: VisitTicketService().getAllUserVisitTickets(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (snapshot.hasError) {
+                  return Center(child: Text("Error: ${snapshot.error}"));
+                }
+
+                final visitTickets = snapshot.data ?? [];
+
+                return Column(
+                  children: visitTickets
+                      .map((ticket) => VisitHistoryCard(
+                        id: ticket.id,
+                        doctorName: ticket.doctor.name,
+                        doctorSpecialization: ticket.doctor.specialization,
+                        hospitalName: ticket.doctor.hospital,
+                        visitDate: DateFormat('dd MMMM yyyy', 'id_ID').format(ticket.visitDate),
+                        visitStatus: ticket.status,
+                        chiefComplaint: ticket.chiefComplaint,
+                      ))
+                      .toList(),
+                );
+              },
             ),
           ),
         ),

@@ -1,23 +1,21 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class VisitHistoryCard extends StatefulWidget {
+  final String id;
   final String doctorName;
   final String doctorSpecialization;
   final String hospitalName;
   final String visitDate;
-  final String visitTime;
-  final String visitStatus;
+  final bool visitStatus;
   final String chiefComplaint;
 
   const VisitHistoryCard({
     super.key,
+    required this.id,
     required this.doctorName,
     required this.doctorSpecialization,
     required this.hospitalName,
     required this.visitDate,
-    required this.visitTime,
     required this.visitStatus,
     required this.chiefComplaint,
   });
@@ -31,9 +29,7 @@ class _VisitHistoryCardState extends State<VisitHistoryCard> {
 
   @override
   Widget build(BuildContext context) {
-    _statusBackgroundColor = widget.visitStatus == 'Pending'
-        ? Colors.amber
-        : Colors.green;
+    _statusBackgroundColor = widget.visitStatus ? Colors.green : Colors.amber;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -63,7 +59,7 @@ class _VisitHistoryCardState extends State<VisitHistoryCard> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  widget.visitStatus,
+                  widget.visitStatus ? 'Dikonfirmasi' : 'Pending',
                   style: TextStyle(fontSize: 12, color: Colors.white),
                 ),
               ),
@@ -84,13 +80,6 @@ class _VisitHistoryCardState extends State<VisitHistoryCard> {
               SizedBox(width: 8),
               Text(
                 widget.visitDate,
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(width: 16),
-              Icon(Icons.access_time, size: 16),
-              SizedBox(width: 8),
-              Text(
-                widget.visitTime,
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
             ],
@@ -144,10 +133,13 @@ class _VisitHistoryCardState extends State<VisitHistoryCard> {
               ],
             ),
           ),
-          if (widget.visitStatus == 'Pending') ...[
+          if (!widget.visitStatus) ...[
             const SizedBox(height: 16),
-            Container(color: const Color.fromARGB(120, 158, 158, 158), height: 1),
-            const SizedBox(height: 8),
+            Container(
+              color: const Color.fromARGB(120, 158, 158, 158),
+              height: 1,
+            ),
+            const SizedBox(height: 12),
             InkWell(
               onTap: () {
                 print('GAS KING WARREN');
@@ -159,7 +151,7 @@ class _VisitHistoryCardState extends State<VisitHistoryCard> {
                   SizedBox(width: 8),
                   Text(
                     'QR Code tersedia untuk check-in',
-                    style: TextStyle(color: Colors.blue,),
+                    style: TextStyle(color: Colors.blue),
                   ),
                 ],
               ),
