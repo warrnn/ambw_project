@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:telehealth/pages/user/visit_form_page.dart';
 
 class DoctorListCard extends StatelessWidget {
   final String doctorPhotoUrl;
@@ -6,7 +7,20 @@ class DoctorListCard extends StatelessWidget {
   final String doctorSpeciality;
   final String hospitalName;
 
-  const DoctorListCard(this.doctorPhotoUrl, this.doctorName, this.doctorSpeciality, this.hospitalName, {super.key});
+  const DoctorListCard(
+    this.doctorPhotoUrl,
+    this.doctorName,
+    this.doctorSpeciality,
+    this.hospitalName, {
+    super.key,
+  });
+
+  void goToVisitFormPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const VisitFormPage()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,8 +93,11 @@ class DoctorListCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            onPressed: () {},
-            child: const Text('Pilih Dokter', style: TextStyle(color: Colors.white, fontSize: 12)),
+            onPressed: () => goToVisitFormPage(context),
+            child: const Text(
+              'Pilih Dokter',
+              style: TextStyle(color: Colors.white, fontSize: 12),
+            ),
           ),
         ],
       ),

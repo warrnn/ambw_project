@@ -12,6 +12,7 @@ dependencies:
   flutter_dotenv: ^6.0.0
   google_fonts: ^6.3.2
   supabase_flutter: ^2.10.3
+  syncfusion_flutter_datepicker: ^31.2.15
 
 dev_dependencies:
   flutter_test:
