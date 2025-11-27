@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:telehealth/authentication/auth_service.dart';
 import 'package:telehealth/components/home_visit_schedule_card.dart';
 import 'package:telehealth/components/menu_card.dart';
+import 'package:telehealth/pages/user/doctor_list_page.dart';
 import 'package:telehealth/pages/user/profile_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,6 +16,20 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final authService = AuthService();
+
+  void goToDoctorListPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const DoctorListPage()),
+    );
+  }
+
+  void goToProfilePage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ProfilePage()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,9 +113,7 @@ class _HomePageState extends State<HomePage> {
                       MenuCard(
                         Icons.medical_services_outlined,
                         'Daftar\nDokter',
-                        onTap: () {
-                          log('Daftar Dokter');
-                        },
+                        onTap: () => goToDoctorListPage(context),
                       ),
                       MenuCard(
                         Icons.history,
@@ -112,14 +125,7 @@ class _HomePageState extends State<HomePage> {
                       MenuCard(
                         Icons.person_outlined,
                         'Profil\nSaya',
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ProfilePage(),
-                            ),
-                          );
-                        },
+                        onTap: () => goToProfilePage(context),
                       ),
                     ],
                   ),
@@ -154,27 +160,30 @@ class _HomePageState extends State<HomePage> {
                           HomeVisitScheduleCard(
                             doctorName: "Dr. Tirta",
                             doctorSpecialization: "Spesialis Penyakit Dalam",
+                            hospitalName: "National Hospital",
                             visitDate: "01 Januari 2025",
                             visitTime: "08:00",
-                            visitStatus: "pending",
+                            visitStatus: "Dikonfirmasi",
                             chiefComplaint: "Sakit perut",
                           ),
                           SizedBox(height: 16),
                           HomeVisitScheduleCard(
                             doctorName: "Dr. Tirta",
                             doctorSpecialization: "Spesialis Penyakit Dalam",
+                            hospitalName: "National Hospital",
                             visitDate: "01 Januari 2025",
                             visitTime: "08:00",
-                            visitStatus: "pending",
+                            visitStatus: "Pending",
                             chiefComplaint: "Sakit perut",
                           ),
                           SizedBox(height: 16),
                           HomeVisitScheduleCard(
                             doctorName: "Dr. Tirta",
                             doctorSpecialization: "Spesialis Penyakit Dalam",
+                            hospitalName: "National Hospital",
                             visitDate: "01 Januari 2025",
                             visitTime: "08:00",
-                            visitStatus: "pending",
+                            visitStatus: "Pending",
                             chiefComplaint: "Sakit perut",
                           ),
                           SizedBox(height: 20),

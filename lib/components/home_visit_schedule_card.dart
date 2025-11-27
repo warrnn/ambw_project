@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class HomeVisitScheduleCard extends StatefulWidget {
   final String doctorName;
   final String doctorSpecialization;
+  final String hospitalName;
   final String visitDate;
   final String visitTime;
   final String visitStatus;
@@ -12,6 +13,7 @@ class HomeVisitScheduleCard extends StatefulWidget {
     super.key,
     required this.doctorName,
     required this.doctorSpecialization,
+    required this.hospitalName,
     required this.visitDate,
     required this.visitTime,
     required this.visitStatus,
@@ -23,13 +25,18 @@ class HomeVisitScheduleCard extends StatefulWidget {
 }
 
 class _HomeVisitScheduleCardState extends State<HomeVisitScheduleCard> {
+  Color _statusBackgroundColor = Colors.amber;
+
   @override
   Widget build(BuildContext context) {
+    _statusBackgroundColor = widget.visitStatus == 'Pending' ? Colors.amber : Colors.green;
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.grey[50],
+        border: Border.all(color: Colors.grey[300]!),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -46,9 +53,9 @@ class _HomeVisitScheduleCardState extends State<HomeVisitScheduleCard> {
             children: [
               Text(widget.doctorName, style: TextStyle(fontSize: 16)),
               Container(
-                padding: EdgeInsets.all(4),
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: Colors.green,
+                  color: _statusBackgroundColor,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
@@ -71,11 +78,19 @@ class _HomeVisitScheduleCardState extends State<HomeVisitScheduleCard> {
             children: [
               Icon(Icons.calendar_month, size: 16),
               SizedBox(width: 8),
-              Text(widget.visitDate, style: TextStyle(fontSize: 14)),
+              Text(widget.visitDate, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
               SizedBox(width: 16),
               Icon(Icons.access_time, size: 16),
               SizedBox(width: 8),
-              Text(widget.visitTime, style: TextStyle(fontSize: 14)),
+              Text(widget.visitTime, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+            ],
+          ),
+          SizedBox(height: 16),
+          Row(
+            children: [
+              Icon(Icons.local_hospital_outlined, size: 16),
+              SizedBox(width: 8),
+              Text(widget.hospitalName, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
             ],
           ),
           SizedBox(height: 16),
