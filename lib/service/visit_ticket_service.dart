@@ -32,4 +32,37 @@ class VisitTicketService {
       throw Exception('Failed to fetch visit tickets: $e');
     }
   }
+
+  Future<void> createVisitTicket(
+    String doctorId,
+    String chiefComplaint,
+    String visitDate,
+    bool status,
+  ) async {
+    try {
+      await supabase.from('visit_tickets').insert([
+        {
+          "doctor_id": doctorId,
+          "chief_complaint": chiefComplaint,
+          "visit_date": visitDate,
+          "status": status,
+          "user_id": supabase.auth.currentUser!.id,
+        },
+      ]);
+    } catch (e) {
+      throw Exception('Failed to create visit ticket: $e');
+    }
+  }
+
+  Future<VisitTicket> searchVisitTicket(String id) async {
+    try {
+      final response = await supabase
+          .from('visit_tickets')
+          .select()
+          .eq('id', id);
+      return response.map((json) => VisitTicket.fromJson(json)).first;
+    } catch (e) {
+      throw Exception('Failed to fetch visit ticket: $e');
+    }
+  }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pretty_qr_code/pretty_qr_code.dart';
+import 'package:telehealth/pages/user/home_page.dart';
 
 class VisitTicketPage extends StatefulWidget {
   const VisitTicketPage({super.key});
@@ -8,6 +10,13 @@ class VisitTicketPage extends StatefulWidget {
 }
 
 class _VisitTicketPageState extends State<VisitTicketPage> {
+  void goToHomePage(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => HomePage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -207,6 +216,60 @@ class _VisitTicketPageState extends State<VisitTicketPage> {
                               ),
                             ),
                           ],
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      Container(
+                        padding: EdgeInsets.only(
+                          top: 16,
+                          bottom: 64,
+                          left: 64,
+                          right: 64,
+                        ),
+                        child: Container(
+                          padding: EdgeInsets.all(24),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: Colors.grey[300]!),
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 8,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: PrettyQrView.data(data: "Lorem"),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 32),
+                        child: Text(
+                          'Tunjukkan QR code ini kepada admin saat check-in',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      SizedBox(height: 32),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            minimumSize: const Size(double.infinity, 60),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          onPressed: () => goToHomePage(context),
+                          child: const Text(
+                            'Kembali ke Beranda',
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
                         ),
                       ),
                     ],

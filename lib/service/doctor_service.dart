@@ -12,4 +12,13 @@ class DoctorService {
       throw Exception('Failed to fetch doctors: $e');
     }
   }
+
+  Future<Doctor> searchDoctor(String id) async {
+    try {
+      final response = await supabase.from('doctors').select().eq('id', id);
+      return response.map((json) => Doctor.fromJson(json)).first;
+    } catch (e) {
+      throw Exception('Failed to fetch doctor: $e');
+    }
+  }
 }

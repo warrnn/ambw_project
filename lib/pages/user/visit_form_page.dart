@@ -2,15 +2,19 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:telehealth/authentication/auth_service.dart';
 import 'package:telehealth/pages/user/visit_ticket_page.dart';
+import 'package:telehealth/service/visit_ticket_service.dart';
 
 class VisitFormPage extends StatefulWidget {
+  final String doctorId;
   final String doctorName;
   final String doctorSpecialization;
   final String hospitalName;
 
   const VisitFormPage({
     super.key,
+    required this.doctorId,
     required this.doctorName,
     required this.doctorSpecialization,
     required this.hospitalName,
@@ -24,18 +28,27 @@ class _VisitFormPageState extends State<VisitFormPage> {
   final TextEditingController _chiefComplaintController =
       TextEditingController();
   DateTime? selectedDate = DateTime.now();
+  final authSerice = AuthService();
 
-  void submitVisitForm(BuildContext context) {
+  Future<void> submitVisitForm(BuildContext context) async {
     final chiefComplaint = _chiefComplaintController.text.trim();
     final visitDate = selectedDate;
 
-    log('Chief Complaint: $chiefComplaint');
-    log('Visit Date: $visitDate');
+    try {
+      await VisitTicketService().createVisitTicket(
+        widget.doctorId,
+        chiefComplaint,
+        visitDate.toString(),
+        false,
+      );
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const VisitTicketPage()),
-    );
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const VisitTicketPage()),
+      );
+    } catch (e) {
+      log('Error creating visit ticket: $e');
+    }
   }
 
   @override

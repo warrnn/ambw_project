@@ -46,6 +46,7 @@ class _DoctorListPageState extends State<DoctorListPage> {
                   return Column(
                     children: [
                       DoctorListCard(
+                        doctor.id,
                         doctor.photoUrl,
                         doctor.name,
                         doctor.specialization,

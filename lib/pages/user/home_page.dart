@@ -181,13 +181,22 @@ class _HomePageState extends State<HomePage> {
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           child: Column(
                             children: pendingVisitTickets.map((ticket) {
-                              return HomeVisitScheduleCard(
-                                doctorName: ticket.doctor.name,
-                                doctorSpecialization: ticket.doctor.specialization,
-                                hospitalName: ticket.doctor.hospital,
-                                visitDate: DateFormat('d MMMM yyyy', 'id_ID').format(ticket.visitDate),
-                                visitStatus: ticket.status,
-                                chiefComplaint: ticket.chiefComplaint,
+                              return Column(
+                                children: [
+                                  HomeVisitScheduleCard(
+                                    doctorName: ticket.doctor.name,
+                                    doctorSpecialization:
+                                        ticket.doctor.specialization,
+                                    hospitalName: ticket.doctor.hospital,
+                                    visitDate: DateFormat(
+                                      'd MMMM yyyy',
+                                      'id_ID',
+                                    ).format(ticket.visitDate),
+                                    visitStatus: ticket.status,
+                                    chiefComplaint: ticket.chiefComplaint,
+                                  ),
+                                  SizedBox(height: 16),
+                                ],
                               );
                             }).toList(),
                           ),

@@ -49,7 +49,7 @@ class _HistoryPageState extends State<HistoryPage> {
                 return Column(
                   children: visitTickets
                       .map((ticket) => VisitHistoryCard(
-                        id: ticket.id,
+                        id: ticket.id!,
                         doctorName: ticket.doctor.name,
                         doctorSpecialization: ticket.doctor.specialization,
                         hospitalName: ticket.doctor.hospital,

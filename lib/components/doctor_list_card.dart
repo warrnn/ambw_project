@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:telehealth/pages/user/visit_form_page.dart';
 
 class DoctorListCard extends StatelessWidget {
+  final String doctorId;
   final String doctorPhotoUrl;
   final String doctorName;
   final String doctorSpecialization;
   final String hospitalName;
 
   const DoctorListCard(
+    this.doctorId,
     this.doctorPhotoUrl,
     this.doctorName,
     this.doctorSpecialization,
@@ -19,7 +21,12 @@ class DoctorListCard extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => VisitFormPage(doctorName: doctorName, doctorSpecialization: doctorSpecialization, hospitalName: hospitalName)
+        builder: (context) => VisitFormPage(
+          doctorId: doctorId,
+          doctorName: doctorName,
+          doctorSpecialization: doctorSpecialization,
+          hospitalName: hospitalName,
+        ),
       ),
     );
   }
@@ -51,6 +58,21 @@ class DoctorListCard extends StatelessWidget {
                   width: 75,
                   height: 75,
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      width: 75,
+                      height: 75,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Icon(
+                        Icons.person,
+                        size: 40,
+                        color: Colors.grey,
+                      ),
+                    );
+                  },
                 ),
               ),
               const SizedBox(width: 16),
