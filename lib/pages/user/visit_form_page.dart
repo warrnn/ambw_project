@@ -28,14 +28,14 @@ class _VisitFormPageState extends State<VisitFormPage> {
   final TextEditingController _chiefComplaintController =
       TextEditingController();
   DateTime? selectedDate = DateTime.now();
-  final authSerice = AuthService();
+  final authService = AuthService();
 
   Future<void> submitVisitForm(BuildContext context) async {
     final chiefComplaint = _chiefComplaintController.text.trim();
     final visitDate = selectedDate;
 
     try {
-      await VisitTicketService().createVisitTicket(
+      final ticketId = await VisitTicketService().createVisitTicket(
         widget.doctorId,
         chiefComplaint,
         visitDate.toString(),
@@ -44,7 +44,9 @@ class _VisitFormPageState extends State<VisitFormPage> {
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const VisitTicketPage()),
+        MaterialPageRoute(
+          builder: (context) => VisitTicketPage(ticketId: ticketId),
+        ),
       );
     } catch (e) {
       log('Error creating visit ticket: $e');
