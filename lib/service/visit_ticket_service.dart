@@ -4,7 +4,7 @@ import 'package:telehealth/model/visit_ticket.dart';
 class VisitTicketService {
   final supabase = Supabase.instance.client;
 
-  Future<List<VisitTicket>> getAllPendingUserVisitTickets() async {
+  Future<List<VisitTicket>> getAllPendingCurrentUserVisitTickets() async {
     try {
       final response = await supabase
           .from('visit_tickets')
@@ -72,6 +72,20 @@ class VisitTicketService {
       return VisitTicket.fromJson(response);
     } catch (e) {
       throw Exception('Failed to fetch visit ticket: $e');
+    }
+  }
+
+  Future<List<VisitTicket>> getAllPendingVisitTickets() async {
+    try {
+      final response = await supabase
+          .from('visit_tickets')
+          .select('*, doctor:doctor_id(*)')
+          .eq('status', false)
+          .order('visit_date', ascending: true);
+      // print(response);
+      return response.map((json) => VisitTicket.fromJson(json)).toList();
+    } catch (e) {
+      throw Exception('Failed to fetch visit tickets: $e');
     }
   }
 }

@@ -159,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                     child: FutureBuilder(
                       future: VisitTicketService()
-                          .getAllPendingUserVisitTickets(),
+                          .getAllPendingCurrentUserVisitTickets(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
