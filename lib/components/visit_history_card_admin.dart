@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class VisitHistoryCard extends StatefulWidget {
+class VisitHistoryCardAdmin extends StatefulWidget {
   final String id;
   final String doctorName;
   final String doctorSpecialization;
@@ -9,7 +9,7 @@ class VisitHistoryCard extends StatefulWidget {
   final bool visitStatus;
   final String chiefComplaint;
 
-  const VisitHistoryCard({
+  const VisitHistoryCardAdmin({
     super.key,
     required this.id,
     required this.doctorName,
@@ -21,10 +21,10 @@ class VisitHistoryCard extends StatefulWidget {
   });
 
   @override
-  State<VisitHistoryCard> createState() => _VisitHistoryCardState();
+  State<VisitHistoryCardAdmin> createState() => _VisitHistoryCardAdminState();
 }
 
-class _VisitHistoryCardState extends State<VisitHistoryCard> {
+class _VisitHistoryCardAdminState extends State<VisitHistoryCardAdmin> {
   Color _statusBackgroundColor = Colors.amber;
 
   @override
@@ -51,7 +51,9 @@ class _VisitHistoryCardState extends State<VisitHistoryCard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(widget.doctorName, style: TextStyle(fontSize: 16)),
+              Expanded(
+                child: Text(widget.doctorName, style: TextStyle(fontSize: 16)),
+              ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
@@ -133,30 +135,20 @@ class _VisitHistoryCardState extends State<VisitHistoryCard> {
               ],
             ),
           ),
-          if (!widget.visitStatus) ...[
-            const SizedBox(height: 16),
-            Container(
-              color: const Color.fromARGB(120, 158, 158, 158),
-              height: 1,
-            ),
-            const SizedBox(height: 12),
-            InkWell(
-              onTap: () {
-                print('GAS KING WARREN');
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(Icons.qr_code_2, color: Colors.blue),
-                  SizedBox(width: 8),
-                  Text(
-                    'QR Code tersedia untuk check-in',
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                ],
+          SizedBox(height: 16),
+          Container(color: const Color.fromARGB(120, 158, 158, 158), height: 1),
+          SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  widget.id,
+                  style: TextStyle(color: Colors.blue),
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ],
       ),
     );

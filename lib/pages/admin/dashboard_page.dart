@@ -4,7 +4,7 @@ import 'package:telehealth/authentication/auth_gate.dart';
 import 'package:telehealth/authentication/auth_service.dart';
 import 'package:telehealth/components/admin_dashboard_visit_schedule_card.dart';
 import 'package:telehealth/components/admin_menu_card.dart';
-import 'package:telehealth/pages/admin/patient_history_page.dart';
+import 'package:telehealth/pages/admin/history_admin_page.dart';
 import 'package:telehealth/pages/admin/qr_scan_page.dart';
 import 'package:telehealth/service/visit_ticket_service.dart';
 
@@ -28,7 +28,7 @@ class _DashboardPageState extends State<DashboardPage> {
   void goToPatientHistoryPage(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const PatientHistoryPage()),
+      MaterialPageRoute(builder: (context) => const HistoryAdminPage()),
     );
   }
 

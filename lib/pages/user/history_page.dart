@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:telehealth/components/visit_history_card.dart';
+import 'package:telehealth/components/visit_history_card_admin.dart';
 import 'package:telehealth/service/visit_ticket_service.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -48,7 +48,7 @@ class _HistoryPageState extends State<HistoryPage> {
 
                 return Column(
                   children: visitTickets
-                      .map((ticket) => VisitHistoryCard(
+                      .map((ticket) => VisitHistoryCardAdmin(
                         id: ticket.id!,
                         doctorName: ticket.doctor.name,
                         doctorSpecialization: ticket.doctor.specialization,
