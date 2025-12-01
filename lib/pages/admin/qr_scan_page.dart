@@ -38,10 +38,9 @@ class _QrScanPageState extends State<QrScanPage> {
       appBar: AppBar(
         title: const Text('QR Code Scanner'),
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
+        elevation: 1,
+        shadowColor: Colors.black26,
+        backgroundColor: Colors.white,
       ),
       body: Column(
         children: <Widget>[
@@ -153,7 +152,7 @@ class _QrScanPageState extends State<QrScanPage> {
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
-      }); 
+      });
 
       controller.pauseCamera();
       VisitTicketService().confirmVisitTicket(scanData.code.toString());

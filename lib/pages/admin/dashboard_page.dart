@@ -152,7 +152,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           child: AdminMenuCard(
                             Icons.medical_information_outlined,
                             'List\nDokter',
-                            onTap: () => goToPatientHistoryPage(context),
+                            onTap: () => goToDoctorListPage(context),
                           ),
                         ),
                       ],

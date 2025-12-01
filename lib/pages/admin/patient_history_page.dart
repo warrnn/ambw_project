@@ -101,11 +101,11 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
         backgroundColor: Colors.white,
         elevation: 1,
         centerTitle: true,
+        shadowColor: Colors.black26,
         title: const Text(
           'Riwayat Kunjungan',
           style: TextStyle(color: Colors.black),
         ),
-        leading: BackButton(color: Colors.black),
       ),
       body: SafeArea(
         child: RefreshIndicator(
