@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:telehealth/pages/admin/dashboard_page.dart';
+import 'package:telehealth/pages/admin/qr_scan_page.dart';
 
 class AdminDashboardVisitScheduleCard extends StatefulWidget {
   final String ticketId;
@@ -35,7 +35,7 @@ class _AdminDashboardVisitScheduleCardState
     void goToQRScanPage(BuildContext context) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const DashboardPage()),
+        MaterialPageRoute(builder: (context) => const QrScanPage()),
       );
     }
 
@@ -72,12 +72,16 @@ class _AdminDashboardVisitScheduleCardState
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      widget.doctorName,
-                      style: TextStyle(fontSize: 16),
-                      textAlign: TextAlign.start,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            widget.doctorName,
+                            style: TextStyle(fontSize: 16),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 8),
                     Row(
