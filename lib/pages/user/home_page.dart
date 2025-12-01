@@ -159,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                     child: FutureBuilder(
                       future: VisitTicketService()
-                          .getAllConfirmedCurrentUserVisitTickets(),
+                          .getAllCurrentUserConfirmedUpcomingAppointments(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -174,33 +174,52 @@ class _HomePageState extends State<HomePage> {
                           );
                         }
 
-                        final pendingVisitTickets = snapshot.data ?? [];
+                        final confirmedVisitTickets = snapshot.data ?? [];
 
-                        return SingleChildScrollView(
-                          physics: const BouncingScrollPhysics(),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          child: Column(
-                            children: pendingVisitTickets.map((ticket) {
-                              return Column(
-                                children: [
-                                  HomeVisitScheduleCard(
-                                    doctorName: ticket.doctor.name,
-                                    doctorSpecialization:
-                                        ticket.doctor.specialization,
-                                    hospitalName: ticket.doctor.hospital,
-                                    visitDate: DateFormat(
-                                      'd MMMM yyyy',
-                                      'id_ID',
-                                    ).format(ticket.visitDate),
-                                    visitStatus: ticket.status,
-                                    chiefComplaint: ticket.chiefComplaint,
+                        if (confirmedVisitTickets.isEmpty) {
+                          return SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 64),
+                                Center(
+                                  child: Text(
+                                    'Tidak ada janji temu mendatang yang dikonfirmasi',
+                                    style: TextStyle(color: Colors.grey[600]),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  SizedBox(height: 16),
-                                ],
-                              );
-                            }).toList(),
-                          ),
-                        );
+                                ),
+                              ],
+                            ),
+                          );
+                        } else {
+                          return SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            child: Column(
+                              children: confirmedVisitTickets.map((ticket) {
+                                return Column(
+                                  children: [
+                                    HomeVisitScheduleCard(
+                                      doctorName: ticket.doctor.name,
+                                      doctorSpecialization:
+                                          ticket.doctor.specialization,
+                                      hospitalName: ticket.doctor.hospital,
+                                      visitDate: DateFormat(
+                                        'd MMMM yyyy',
+                                        'id_ID',
+                                      ).format(ticket.visitDate),
+                                      visitStatus: ticket.status,
+                                      chiefComplaint: ticket.chiefComplaint,
+                                    ),
+                                    SizedBox(height: 16),
+                                  ],
+                                );
+                              }).toList(),
+                            ),
+                          );
+                        }
                       },
                     ),
                   ),

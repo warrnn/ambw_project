@@ -70,6 +70,7 @@ class _AdminDashboardVisitScheduleCardState
               SizedBox(width: 16),
               Expanded(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       widget.doctorName,

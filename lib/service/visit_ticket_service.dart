@@ -19,11 +19,13 @@ class VisitTicketService {
     }
   }
 
-  Future<List<VisitTicket>> getAllConfirmedCurrentUserVisitTickets() async {
+  Future<List<VisitTicket>>
+  getAllCurrentUserConfirmedUpcomingAppointments() async {
     try {
       final response = await supabase
           .from('visit_tickets')
           .select('*, doctor:doctor_id(*)')
+          .gte('visit_date', DateTime.now().toString())
           .eq('status', true)
           .eq('user_id', supabase.auth.currentUser!.id)
           .order('visit_date', ascending: true);

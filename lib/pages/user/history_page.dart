@@ -48,15 +48,26 @@ class _HistoryPageState extends State<HistoryPage> {
 
                 return Column(
                   children: visitTickets
-                      .map((ticket) => VisitHistoryCard(
-                        ticketId: ticket.id!,
-                        doctorName: ticket.doctor.name,
-                        doctorSpecialization: ticket.doctor.specialization,
-                        hospitalName: ticket.doctor.hospital,
-                        visitDate: DateFormat('dd MMMM yyyy', 'id_ID').format(ticket.visitDate),
-                        visitStatus: ticket.status,
-                        chiefComplaint: ticket.chiefComplaint,
-                      ))
+                      .map(
+                        (ticket) => Column(
+                          children: [
+                            VisitHistoryCard(
+                              ticketId: ticket.id!,
+                              doctorName: ticket.doctor.name,
+                              doctorSpecialization:
+                                  ticket.doctor.specialization,
+                              hospitalName: ticket.doctor.hospital,
+                              visitDate: DateFormat(
+                                'dd MMMM yyyy',
+                                'id_ID',
+                              ).format(ticket.visitDate),
+                              visitStatus: ticket.status,
+                              chiefComplaint: ticket.chiefComplaint,
+                            ),
+                            const SizedBox(height: 16),
+                          ],
+                        ),
+                      )
                       .toList(),
                 );
               },
