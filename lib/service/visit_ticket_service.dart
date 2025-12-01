@@ -19,6 +19,21 @@ class VisitTicketService {
     }
   }
 
+  Future<List<VisitTicket>> getAllConfirmedCurrentUserVisitTickets() async {
+    try {
+      final response = await supabase
+          .from('visit_tickets')
+          .select('*, doctor:doctor_id(*)')
+          .eq('status', true)
+          .eq('user_id', supabase.auth.currentUser!.id)
+          .order('visit_date', ascending: true);
+      // print(response);
+      return response.map((json) => VisitTicket.fromJson(json)).toList();
+    } catch (e) {
+      throw Exception('Failed to fetch visit tickets: $e');
+    }
+  }
+
   Future<List<VisitTicket>> getAllUserVisitTickets() async {
     try {
       final response = await supabase
@@ -86,6 +101,31 @@ class VisitTicketService {
       return response.map((json) => VisitTicket.fromJson(json)).toList();
     } catch (e) {
       throw Exception('Failed to fetch visit tickets: $e');
+    }
+  }
+
+  Future<List<VisitTicket>> getAllConfirmedVisitTickets() async {
+    try {
+      final response = await supabase
+          .from('visit_tickets')
+          .select('*, doctor:doctor_id(*)')
+          .eq('status', true)
+          .order('visit_date', ascending: true);
+      // print(response);
+      return response.map((json) => VisitTicket.fromJson(json)).toList();
+    } catch (e) {
+      throw Exception('Failed to fetch visit tickets: $e');
+    }
+  }
+
+  Future<void> confirmVisitTicket(String id) async {
+    try {
+      await supabase
+          .from('visit_tickets')
+          .update({'status': true})
+          .eq('id', id);
+    } catch (e) {
+      throw Exception('Failed to update visit ticket status: $e');
     }
   }
 }

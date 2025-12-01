@@ -52,7 +52,15 @@ class _VisitHistoryCardState extends State<VisitHistoryCard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(widget.doctorName, style: TextStyle(fontSize: 16)),
+              Expanded(
+                child: Text(
+                  widget.doctorName,
+                  style: TextStyle(fontSize: 16),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              SizedBox(width: 4),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
@@ -146,7 +154,8 @@ class _VisitHistoryCardState extends State<VisitHistoryCard> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => VisitTicketPage(ticketId: widget.ticketId),
+                    builder: (context) =>
+                        VisitTicketPage(ticketId: widget.ticketId),
                   ),
                 );
               },
