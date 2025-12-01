@@ -15,7 +15,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   final authService = AuthService();
 
-  void handleLogin() async {
+  void handleLogin(BuildContext context) async {
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
@@ -32,7 +32,6 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       await authService.login(email: email, password: password);
-      goToHomePage(context);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -136,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          onPressed: () => handleLogin(),
+                          onPressed: () => handleLogin(context),
                           child: const Text(
                             'Login',
                             style: TextStyle(color: Colors.white),

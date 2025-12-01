@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:telehealth/authentication/auth_gate.dart';
 import 'package:telehealth/authentication/auth_service.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -11,8 +12,16 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final authService = AuthService();
 
-  void handleLogout() async {
-    await authService.logout(context);
+  void handleLogout(BuildContext context) async {
+    await authService.logout();
+
+    if (!context.mounted) return;
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (_) => AuthGate()),
+      (route) => false,
+    );
   }
 
   @override
@@ -197,7 +206,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  onPressed: () => handleLogout(),
+                  onPressed: () => handleLogout(context),
                   child: const Text(
                     'Logout',
                     style: TextStyle(color: Colors.white),

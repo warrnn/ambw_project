@@ -1,39 +1,58 @@
+import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:telehealth/authentication/auth_service.dart';
 import 'package:telehealth/pages/admin/dashboard_page.dart';
 import 'package:telehealth/pages/auth/login_page.dart';
 import 'package:telehealth/pages/user/home_page.dart';
+import 'package:telehealth/service/admin_service.dart';
 
 class AuthGate extends StatelessWidget {
-  final authService = AuthService();
-
-  AuthGate({super.key});
+  const AuthGate({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final authService = AuthService();
+    final adminService = AdminService();
+
     return StreamBuilder(
       stream: authService.client().auth.onAuthStateChange,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(body: Center(child: CircularProgressIndicator()));
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
         }
 
-        final session = authService.client().auth.currentSession;
-        final adminEmail = dotenv.env['ADMIN_EMAIL']!
-            .split(',')
-            .map((e) => e.trim())
-            .toList();
+        final session = snapshot.hasData
+            ? (snapshot.data as dynamic).session
+            : authService.client().auth.currentSession;
 
-        if (session != null) {
-          if (adminEmail.contains(session.user.email)) {
-            return DashboardPage();
-          } else {
-            return HomePage();
-          }
-        } else {
+        if (session == null) {
           return LoginPage();
         }
+
+        return FutureBuilder<List<String>>(
+          future: adminService.getAllAdmins(),
+          builder: (context, adminSnapshot) {
+            if (!adminSnapshot.hasData) {
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            }
+
+            final adminIds = adminSnapshot.data!;
+            final userId = session.user.id;
+
+            developer.log('adminIds: $adminIds');
+            developer.log('logged userId: $userId');
+
+            if (adminIds.contains(userId)) {
+              return DashboardPage();
+            }
+
+            return HomePage();
+          },
+        );
       },
     );
   }

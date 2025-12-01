@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:telehealth/authentication/auth_gate.dart';
 import 'package:telehealth/authentication/auth_service.dart';
 import 'package:telehealth/components/admin_dashboard_visit_schedule_card.dart';
 import 'package:telehealth/components/admin_menu_card.dart';
+import 'package:telehealth/pages/admin/patient_history_page.dart';
+import 'package:telehealth/pages/admin/qr_scan_page.dart';
 import 'package:telehealth/service/visit_ticket_service.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -18,19 +21,27 @@ class _DashboardPageState extends State<DashboardPage> {
   void goToQRScanPage(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const DashboardPage()),
+      MaterialPageRoute(builder: (context) => const QrScanPage()),
     );
   }
 
   void goToPatientHistoryPage(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const DashboardPage()),
+      MaterialPageRoute(builder: (context) => const PatientHistoryPage()),
     );
   }
 
-  void handleLogout() async {
-    await authService.logout(context);
+  void handleLogout(BuildContext context) async {
+    await authService.logout();
+
+    if (!context.mounted) return;
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (_) => AuthGate()),
+      (route) => false,
+    );
   }
 
   @override
@@ -88,7 +99,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           ],
                         ),
                         InkWell(
-                          onTap: handleLogout,
+                          onTap: () => handleLogout(context),
                           borderRadius: BorderRadius.circular(50),
                           child: Container(
                             padding: const EdgeInsets.all(10),

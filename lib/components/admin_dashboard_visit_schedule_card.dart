@@ -71,16 +71,12 @@ class _AdminDashboardVisitScheduleCardState
               Expanded(
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        Text(
-                          widget.doctorName,
-                          style: TextStyle(fontSize: 16),
-                          textAlign: TextAlign.start,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
+                    Text(
+                      widget.doctorName,
+                      style: TextStyle(fontSize: 16),
+                      textAlign: TextAlign.start,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: 8),
                     Row(
@@ -150,10 +146,7 @@ class _AdminDashboardVisitScheduleCardState
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.qr_code,
-                  color: Colors.white,
-                ),
+                Icon(Icons.qr_code, color: Colors.white),
                 SizedBox(width: 8),
                 Text(
                   'Sqan QR Code',
