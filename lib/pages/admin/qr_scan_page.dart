@@ -18,10 +18,6 @@ class _QrScanPageState extends State<QrScanPage> {
   QRViewController? _qrViewController;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
-  void handleConfirmTicket(String id) {
-    VisitTicketService().confirmVisitTicket(id);
-  }
-
   @override
   void reassemble() {
     super.reassemble();
@@ -157,10 +153,10 @@ class _QrScanPageState extends State<QrScanPage> {
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
-      });
+      }); 
 
       controller.pauseCamera();
-      handleConfirmTicket(scanData.code.toString());
+      VisitTicketService().confirmVisitTicket(scanData.code.toString());
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => DashboardPage()),

@@ -6,6 +6,7 @@ import 'package:telehealth/components/admin_dashboard_visit_schedule_card.dart';
 import 'package:telehealth/components/admin_menu_card.dart';
 import 'package:telehealth/pages/admin/patient_history_page.dart';
 import 'package:telehealth/pages/admin/qr_scan_page.dart';
+import 'package:telehealth/pages/admin/doctor_list_page.dart';
 import 'package:telehealth/service/visit_ticket_service.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -29,6 +30,13 @@ class _DashboardPageState extends State<DashboardPage> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const PatientHistoryPage()),
+    );
+  }
+
+  void goToDoctorListPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const DoctorListPage()),
     );
   }
 
@@ -127,7 +135,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         Expanded(
                           child: AdminMenuCard(
                             Icons.qr_code_scanner,
-                            'Scan QR Code',
+                            'Scan\nQR Code',
                             onTap: () => goToQRScanPage(context),
                           ),
                         ),
@@ -135,7 +143,15 @@ class _DashboardPageState extends State<DashboardPage> {
                         Expanded(
                           child: AdminMenuCard(
                             Icons.history,
-                            'Riwayat Pasien',
+                            'Riwayat\nPasien',
+                            onTap: () => goToPatientHistoryPage(context),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: AdminMenuCard(
+                            Icons.medical_information_outlined,
+                            'List\nDokter',
                             onTap: () => goToPatientHistoryPage(context),
                           ),
                         ),
