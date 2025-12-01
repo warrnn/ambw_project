@@ -190,6 +190,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               return Column(
                                 children: [
                                   AdminDashboardVisitScheduleCard(
+                                    ticketId: ticket.id!,
                                     doctorName: ticket.doctor.name,
                                     doctorSpecialization:
                                         ticket.doctor.specialization,
@@ -199,7 +200,6 @@ class _DashboardPageState extends State<DashboardPage> {
                                       'id_ID',
                                     ).format(ticket.visitDate),
                                     visitStatus: ticket.status,
-                                    userName: ticket.userId,
                                   ),
                                   SizedBox(height: 16),
                                 ],

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:telehealth/pages/user/visit_ticket_page.dart';
 
 class VisitHistoryCard extends StatefulWidget {
-  final String id;
+  final String ticketId;
   final String doctorName;
   final String doctorSpecialization;
   final String hospitalName;
@@ -11,7 +12,7 @@ class VisitHistoryCard extends StatefulWidget {
 
   const VisitHistoryCard({
     super.key,
-    required this.id,
+    required this.ticketId,
     required this.doctorName,
     required this.doctorSpecialization,
     required this.hospitalName,
@@ -142,7 +143,12 @@ class _VisitHistoryCardState extends State<VisitHistoryCard> {
             const SizedBox(height: 12),
             InkWell(
               onTap: () {
-                print('GAS KING WARREN');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => VisitTicketPage(ticketId: widget.ticketId),
+                  ),
+                );
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

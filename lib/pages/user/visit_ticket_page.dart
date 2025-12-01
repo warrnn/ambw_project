@@ -266,25 +266,42 @@ class _VisitTicketPageState extends State<VisitTicketPage> {
                             Container(
                               padding: EdgeInsets.only(
                                 top: 16,
-                                bottom: 64,
-                                left: 64,
-                                right: 64,
+                                bottom: 48,
+                                left: 48,
+                                right: 48,
                               ),
-                              child: Container(
-                                padding: EdgeInsets.all(24),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(color: Colors.grey[300]!),
-                                  borderRadius: BorderRadius.circular(16),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black12,
-                                      blurRadius: 8,
-                                      offset: const Offset(0, 4),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                        color: Colors.grey[300]!,
+                                      ),
+                                      borderRadius: BorderRadius.circular(16),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black12,
+                                          blurRadius: 8,
+                                          offset: const Offset(0, 4),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                                child: PrettyQrView.data(data: _ticket!.id!),
+                                    child: PrettyQrView.data(
+                                      data: _ticket!.id!,
+                                    ),
+                                  ),
+                                  SizedBox(height: 16),
+                                  Text(
+                                    _ticket!.id!.toUpperCase(),
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 12,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
                               ),
                             ),
                             Container(

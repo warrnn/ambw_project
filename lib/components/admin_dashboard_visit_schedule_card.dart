@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:telehealth/pages/admin/dashboard_page.dart';
 
 class AdminDashboardVisitScheduleCard extends StatefulWidget {
+  final String ticketId;
   final String doctorName;
   final String doctorSpecialization;
   final String hospitalName;
   final String visitDate;
   final bool visitStatus;
-  final String userName;
 
   const AdminDashboardVisitScheduleCard({
     super.key,
+    required this.ticketId,
     required this.doctorName,
     required this.doctorSpecialization,
     required this.hospitalName,
     required this.visitDate,
     required this.visitStatus,
-    required this.userName,
   });
 
   @override
@@ -120,6 +120,7 @@ class _AdminDashboardVisitScheduleCardState
                   ],
                 ),
               ),
+              SizedBox(width: 8),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
@@ -132,6 +133,12 @@ class _AdminDashboardVisitScheduleCardState
                 ),
               ),
             ],
+          ),
+          SizedBox(height: 16),
+          Text(
+            widget.ticketId.toUpperCase(),
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 12, color: Colors.blue),
           ),
           SizedBox(height: 20),
           ElevatedButton(
