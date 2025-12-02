@@ -46,8 +46,8 @@ class _DoctorListPageState extends State<DoctorListPage> {
                   return Column(
                     children: [
                       DoctorListCard(
-                        doctor.id,
-                        doctor.photoUrl,
+                        doctor.id.toString(),
+                        doctor.photoUrl.toString(),
                         doctor.name,
                         doctor.specialization,
                         doctor.hospital,

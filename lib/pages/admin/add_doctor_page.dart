@@ -1,4 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:telehealth/model/doctor.dart';
+import 'package:telehealth/service/doctor_service.dart';
 
 class AddDoctorPage extends StatefulWidget {
   const AddDoctorPage({super.key});
@@ -12,7 +17,47 @@ class _AddDoctorPageState extends State<AddDoctorPage> {
   final TextEditingController specialistController = TextEditingController();
   final TextEditingController hospitalController = TextEditingController();
 
-  String? imagePath;
+  XFile? uploadedImage;
+
+  final picker = ImagePicker();
+
+  Future<void> pickImage() async {
+    final file = await picker.pickImage(source: ImageSource.gallery);
+    if (file != null) {
+      setState(() {
+        uploadedImage = file;
+      });
+    }
+  }
+
+  void handleSubmit(Doctor doctor) async {
+    if (nameController.text.isEmpty ||
+        specialistController.text.isEmpty ||
+        hospitalController.text.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Semua field wajib diisi")));
+      return;
+    }
+
+    try {
+      final doctorId = await DoctorService().createDoctor(doctor);
+
+      if (uploadedImage != null) {
+        final imageUrl = await DoctorService().uploadDoctorPhoto(uploadedImage!, doctorId);
+        await DoctorService().updateDoctorPhoto(doctorId, imageUrl!);
+      }
+
+      Navigator.pop(context, true);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Dokter berhasil ditambahkan!")),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Error: $e")));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,20 +80,31 @@ class _AddDoctorPageState extends State<AddDoctorPage> {
         child: Column(
           children: [
             InkWell(
-              onTap: () {
-                // TODO: upload image
-              },
+              onTap: pickImage,
               child: Column(
                 children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.blue.withOpacity(0.15),
-                    child: const Icon(
-                      Icons.camera_alt,
-                      size: 35,
-                      color: Colors.blue,
+                  Container(
+                    width: 140,
+                    height: 140,
+                    decoration: BoxDecoration(
+                      color: Colors.blue.withAlpha(30),
+                      borderRadius: BorderRadius.circular(16),
+                      image: uploadedImage != null
+                          ? DecorationImage(
+                              image: FileImage(File(uploadedImage!.path)),
+                              fit: BoxFit.cover,
+                            )
+                          : null,
                     ),
+                    child: uploadedImage == null
+                        ? const Icon(
+                            Icons.camera_alt,
+                            size: 72,
+                            color: Colors.blue,
+                          )
+                        : null,
                   ),
+
                   const SizedBox(height: 8),
                   const Text(
                     "Upload Foto Dokter",
@@ -74,8 +130,14 @@ class _AddDoctorPageState extends State<AddDoctorPage> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
+                onPressed: () => {
+                  handleSubmit(
+                    Doctor(
+                      name: nameController.text,
+                      specialization: specialistController.text,
+                      hospital: hospitalController.text,
+                    ),
+                  ),
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF1E88E5),

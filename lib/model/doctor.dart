@@ -1,16 +1,16 @@
 class Doctor {
-  final String id;
+  final String? id;
   final String name;
   final String specialization;
   final String hospital;
-  final String photoUrl;
+  final String? photoUrl;
 
   Doctor({
-    required this.id,
+    this.id,
     required this.name,
     required this.specialization,
     required this.hospital,
-    required this.photoUrl,
+    this.photoUrl,
   });
 
   factory Doctor.fromJson(Map<String, dynamic> json) {

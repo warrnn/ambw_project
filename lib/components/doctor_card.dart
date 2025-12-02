@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DoctorCard extends StatelessWidget {
+  final String id;
   final String name;
   final String specialist;
   final String hospital;
@@ -8,6 +9,7 @@ class DoctorCard extends StatelessWidget {
 
   const DoctorCard({
     super.key,
+    required this.id,
     required this.name,
     required this.specialist,
     required this.hospital,
@@ -25,7 +27,7 @@ class DoctorCard extends StatelessWidget {
           BoxShadow(
             blurRadius: 12,
             offset: const Offset(0, 4),
-            color: Colors.black.withOpacity(0.07),
+            color: Colors.black.withAlpha(30),
           ),
         ],
       ),
@@ -60,7 +62,7 @@ class DoctorCard extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   specialist,
-                  style: const TextStyle(fontSize: 13, color: Colors.black54),
+                  style: const TextStyle(fontSize: 13, color: Colors.blue),
                 ),
                 Text(
                   hospital,
