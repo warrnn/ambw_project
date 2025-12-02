@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:telehealth/service/doctor_service.dart';
 
 class DoctorCard extends StatelessWidget {
   final String id;
@@ -6,6 +7,7 @@ class DoctorCard extends StatelessWidget {
   final String specialist;
   final String hospital;
   final String imageUrl;
+  final VoidCallback onDeleted;
 
   const DoctorCard({
     super.key,
@@ -14,7 +16,20 @@ class DoctorCard extends StatelessWidget {
     required this.specialist,
     required this.hospital,
     required this.imageUrl,
+    required this.onDeleted,
   });
+
+  void handleDelete(BuildContext context, String id, String imageUrl) async {
+    try {
+      await DoctorService().deleteDoctor(id, imageUrl);
+      Navigator.pop(context);
+      onDeleted();
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Error: $e")));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +102,7 @@ class DoctorCard extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: const Text("Hapus Dokter?"),
         content: Text("Apakah Anda yakin ingin menghapus $name dari daftar?"),
@@ -102,10 +118,8 @@ class DoctorCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text("Hapus", style: TextStyle(color: Colors.black)),
+            onPressed: () => handleDelete(context, id, imageUrl),
+            child: const Text("Hapus", style: TextStyle(color: Colors.white)),
           ),
         ],
       ),

@@ -87,4 +87,15 @@ class DoctorService {
       throw Exception('Failed to update doctor photo: $e');
     }
   }
+
+  Future<void> deleteDoctor(String doctorId, String imageUrl) async {
+    try {
+      final fileName = imageUrl.split('/').last;
+
+      await supabase.from('doctors').delete().eq('id', doctorId);
+      await supabase.storage.from('doctor_photos').remove([fileName]);
+    } catch (e) {
+      throw Exception('Failed to delete doctor: $e');
+    }
+  }
 }

@@ -101,6 +101,7 @@ class _DoctorListPageState extends State<DoctorListPage> {
                               specialist: doctor.specialization,
                               hospital: doctor.hospital,
                               imageUrl: doctor.photoUrl ?? "",
+                              onDeleted: reloadDoctors,
                             ),
                             const SizedBox(height: 16),
                           ],
