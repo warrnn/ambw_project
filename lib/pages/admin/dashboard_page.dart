@@ -180,50 +180,71 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                   ),
                   Expanded(
-                    child: FutureBuilder(
-                      future: VisitTicketService().getAllPendingVisitTickets(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-
-                        if (snapshot.hasError) {
-                          return Center(
-                            child: Text("Error: ${snapshot.error}"),
-                          );
-                        }
-
-                        final pendingVisitTickets = snapshot.data ?? [];
-
-                        return SingleChildScrollView(
-                          physics: const BouncingScrollPhysics(),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          child: Column(
-                            children: pendingVisitTickets.map((ticket) {
-                              return Column(
-                                children: [
-                                  AdminDashboardVisitScheduleCard(
-                                    ticketId: ticket.id!,
-                                    doctorName: ticket.doctor.name,
-                                    doctorSpecialization:
-                                        ticket.doctor.specialization,
-                                    hospitalName: ticket.doctor.hospital,
-                                    visitDate: DateFormat(
-                                      'd MMMM yyyy',
-                                      'id_ID',
-                                    ).format(ticket.visitDate),
-                                    visitStatus: ticket.status,
-                                  ),
-                                  SizedBox(height: 16),
-                                ],
-                              );
-                            }).toList(),
-                          ),
-                        );
+                    child: RefreshIndicator(
+                      color: Colors.blue,
+                      backgroundColor: Colors.white,
+                      onRefresh: () async {
+                        setState(() {});
                       },
+                      child: FutureBuilder(
+                        future: VisitTicketService()
+                            .getAllPendingVisitTickets(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+
+                          if (snapshot.hasError) {
+                            return Center(
+                              child: Text("Error: ${snapshot.error}"),
+                            );
+                          }
+
+                          final pendingVisitTickets = snapshot.data ?? [];
+
+                          if (pendingVisitTickets.isEmpty) {
+                            return SingleChildScrollView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              child: const Center(
+                                heightFactor: 16,
+                                child: Text(
+                                  'Tidak ada pasien terbaru',
+                                  style: TextStyle(color: Colors.blueGrey),
+                                ),
+                              ),
+                            );
+                          }
+
+                          return SingleChildScrollView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            child: Column(
+                              children: pendingVisitTickets.map((ticket) {
+                                return Column(
+                                  children: [
+                                    AdminDashboardVisitScheduleCard(
+                                      ticketId: ticket.id!,
+                                      doctorName: ticket.doctor.name,
+                                      doctorSpecialization:
+                                          ticket.doctor.specialization,
+                                      hospitalName: ticket.doctor.hospital,
+                                      visitDate: DateFormat(
+                                        'd MMMM yyyy',
+                                        'id_ID',
+                                      ).format(ticket.visitDate),
+                                      visitStatus: ticket.status,
+                                    ),
+                                    const SizedBox(height: 16),
+                                  ],
+                                );
+                              }).toList(),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],

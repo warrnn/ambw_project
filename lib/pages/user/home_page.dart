@@ -18,6 +18,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final authService = AuthService();
 
+  Future<void> _refresh() async {
+    setState(() {});
+  }
+
   void goToDoctorListPage(BuildContext context) {
     Navigator.push(
       context,
@@ -157,45 +161,50 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Expanded(
-                    child: FutureBuilder(
-                      future: VisitTicketService()
-                          .getAllCurrentUserConfirmedUpcomingAppointments(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
+                    child: RefreshIndicator(
+                      onRefresh: _refresh,
+                      color: Colors.blue,
+                      backgroundColor: Colors.white,
+                      child: FutureBuilder(
+                        future: VisitTicketService()
+                            .getAllCurrentUserConfirmedUpcomingAppointments(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
 
-                        if (snapshot.hasError) {
-                          return Center(
-                            child: Text("Error: ${snapshot.error}"),
-                          );
-                        }
+                          if (snapshot.hasError) {
+                            return Center(
+                              child: Text("Error: ${snapshot.error}"),
+                            );
+                          }
 
-                        final confirmedVisitTickets = snapshot.data ?? [];
+                          final confirmedVisitTickets = snapshot.data ?? [];
 
-                        if (confirmedVisitTickets.isEmpty) {
-                          return SingleChildScrollView(
-                            physics: const BouncingScrollPhysics(),
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 64),
-                                Center(
-                                  child: Text(
-                                    'Tidak ada janji temu mendatang yang dikonfirmasi',
-                                    style: TextStyle(color: Colors.grey[600]),
-                                    textAlign: TextAlign.center,
+                          if (confirmedVisitTickets.isEmpty) {
+                            return SingleChildScrollView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              child: Column(
+                                children: [
+                                  const SizedBox(height: 64),
+                                  Center(
+                                    child: Text(
+                                      'Tidak ada janji temu mendatang yang dikonfirmasi',
+                                      style: TextStyle(color: Colors.grey[600]),
+                                      textAlign: TextAlign.center,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          );
-                        } else {
+                                ],
+                              ),
+                            );
+                          }
+
                           return SingleChildScrollView(
-                            physics: const BouncingScrollPhysics(),
+                            physics: const AlwaysScrollableScrollPhysics(),
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             child: Column(
                               children: confirmedVisitTickets.map((ticket) {
@@ -213,14 +222,14 @@ class _HomePageState extends State<HomePage> {
                                       visitStatus: ticket.status,
                                       chiefComplaint: ticket.chiefComplaint,
                                     ),
-                                    SizedBox(height: 16),
+                                    const SizedBox(height: 16),
                                   ],
                                 );
                               }).toList(),
                             ),
                           );
-                        }
-                      },
+                        },
+                      ),
                     ),
                   ),
                 ],

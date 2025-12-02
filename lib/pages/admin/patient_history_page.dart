@@ -107,152 +107,162 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: _loadData,
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    _buildSummaryCard(
-                      'Total Riwayat',
-                      total,
-                      Colors.blue.shade50,
-                      Colors.blue,
-                    ),
-                    _buildSummaryCard(
-                      'Pending Status',
-                      pending,
-                      Colors.yellow.shade50,
-                      Colors.orange.shade700,
-                    ),
-                    _buildSummaryCard(
-                      'Confirmed',
-                      confirmed,
-                      Colors.green.shade50,
-                      Colors.green.shade700,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.filter_list,
-                          size: 18,
-                          color: Colors.black54,
+      body: Container(
+        color: Colors.white,
+        height: double.infinity,
+        child: SafeArea(
+          child: RefreshIndicator(
+            onRefresh: _loadData,
+            color: Colors.blue,
+            backgroundColor: Colors.white,
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      _buildSummaryCard(
+                        'Total Riwayat',
+                        total,
+                        Colors.blue.shade50,
+                        Colors.blue,
+                      ),
+                      _buildSummaryCard(
+                        'Pending Status',
+                        pending,
+                        Colors.yellow.shade50,
+                        Colors.orange.shade700,
+                      ),
+                      _buildSummaryCard(
+                        'Confirmed',
+                        confirmed,
+                        Colors.green.shade50,
+                        Colors.green.shade700,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.filter_list,
+                            size: 18,
+                            color: Colors.black54,
+                          ),
+                          const SizedBox(width: 8),
+                          const Text(
+                            'Filter Status',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 10,
                         ),
-                        const SizedBox(width: 8),
-                        const Text(
-                          'Filter Status',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade100,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: Colors.grey.shade300,
+                            width: 1,
                           ),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 10,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade100,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                          color: Colors.grey.shade300,
-                          width: 1,
-                        ),
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          value: _selectedFilter,
-                          isExpanded: true,
-                          icon: Icon(
-                            Icons.arrow_drop_down,
-                            color: Colors.grey.shade600,
-                          ),
-                          items: const [
-                            DropdownMenuItem(
-                              value: 'Semua Kunjungan',
-                              child: Text('Semua Kunjungan'),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: _selectedFilter,
+                            isExpanded: true,
+                            icon: Icon(
+                              Icons.arrow_drop_down,
+                              color: Colors.grey.shade600,
                             ),
-                            DropdownMenuItem(
-                              value: 'Pending',
-                              child: Text('Pending'),
-                            ),
-                            DropdownMenuItem(
-                              value: 'Confirmed',
-                              child: Text('Confirmed'),
-                            ),
-                          ],
-                          onChanged: (v) {
-                            if (v == null) return;
-                            setState(() {
-                              _selectedFilter = v;
-                              _applyFilter();
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                _loading
-                    ? const Center(
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 32),
-                          child: CircularProgressIndicator(),
-                        ),
-                      )
-                    : _filteredTickets.isEmpty
-                    ? Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 40),
-                          child: Column(
-                            children: const [
-                              Icon(Icons.history, size: 64, color: Colors.grey),
-                              SizedBox(height: 12),
-                              Text(
-                                'Belum ada riwayat kunjungan',
-                                style: TextStyle(color: Colors.grey),
+                            items: const [
+                              DropdownMenuItem(
+                                value: 'Semua Kunjungan',
+                                child: Text('Semua Kunjungan'),
+                              ),
+                              DropdownMenuItem(
+                                value: 'Pending',
+                                child: Text('Pending'),
+                              ),
+                              DropdownMenuItem(
+                                value: 'Confirmed',
+                                child: Text('Confirmed'),
                               ),
                             ],
+                            onChanged: (v) {
+                              if (v == null) return;
+                              setState(() {
+                                _selectedFilter = v;
+                                _applyFilter();
+                              });
+                            },
                           ),
                         ),
-                      )
-                    : Column(
-                        children: _filteredTickets.map<Widget>((ticket) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: VisitHistoryCardAdmin(
-                              id: ticket.id!,
-                              doctorName: ticket.doctor.name,
-                              doctorSpecialization:
-                                  ticket.doctor.specialization,
-                              hospitalName: ticket.doctor.hospital,
-                              visitDate: DateFormat(
-                                'dd MMMM yyyy',
-                                'id_ID',
-                              ).format(ticket.visitDate),
-                              visitStatus: ticket.status,
-                              chiefComplaint: ticket.chiefComplaint,
-                            ),
-                          );
-                        }).toList(),
                       ),
-              ],
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  _loading
+                      ? const Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 32),
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
+                      : _filteredTickets.isEmpty
+                      ? Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 40),
+                            child: Column(
+                              children: const [
+                                Icon(
+                                  Icons.history,
+                                  size: 64,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(height: 12),
+                                Text(
+                                  'Belum ada riwayat kunjungan',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : Column(
+                          children: _filteredTickets.map<Widget>((ticket) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              child: VisitHistoryCardAdmin(
+                                id: ticket.id!,
+                                doctorName: ticket.doctor.name,
+                                doctorSpecialization:
+                                    ticket.doctor.specialization,
+                                hospitalName: ticket.doctor.hospital,
+                                visitDate: DateFormat(
+                                  'dd MMMM yyyy',
+                                  'id_ID',
+                                ).format(ticket.visitDate),
+                                visitStatus: ticket.status,
+                                chiefComplaint: ticket.chiefComplaint,
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                ],
+              ),
             ),
           ),
         ),

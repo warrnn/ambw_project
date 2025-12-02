@@ -31,7 +31,8 @@ class _AddDoctorPageState extends State<AddDoctorPage> {
   }
 
   void handleSubmit(Doctor doctor) async {
-    if (nameController.text.isEmpty ||
+    if (uploadedImage == null ||
+        nameController.text.isEmpty ||
         specialistController.text.isEmpty ||
         hospitalController.text.isEmpty) {
       ScaffoldMessenger.of(
@@ -44,7 +45,10 @@ class _AddDoctorPageState extends State<AddDoctorPage> {
       final doctorId = await DoctorService().createDoctor(doctor);
 
       if (uploadedImage != null) {
-        final imageUrl = await DoctorService().uploadDoctorPhoto(uploadedImage!, doctorId);
+        final imageUrl = await DoctorService().uploadDoctorPhoto(
+          uploadedImage!,
+          doctorId,
+        );
         await DoctorService().updateDoctorPhoto(doctorId, imageUrl!);
       }
 

@@ -11,6 +11,10 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
+  Future<void> _refresh() async {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,14 +29,15 @@ class _HistoryPageState extends State<HistoryPage> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: BoxDecoration(color: Colors.white),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: EdgeInsets.symmetric(vertical: 24, horizontal: 4),
+      body: RefreshIndicator(
+        color: Colors.blue,
+        backgroundColor: Colors.white,
+        onRefresh: _refresh,
+
+        child: Container(
+          color: Colors.white,
+          height: double.infinity,
+          child: SafeArea(
             child: FutureBuilder(
               future: VisitTicketService().getAllUserVisitTickets(),
               builder: (context, snapshot) {
@@ -46,29 +51,43 @@ class _HistoryPageState extends State<HistoryPage> {
 
                 final visitTickets = snapshot.data ?? [];
 
-                return Column(
-                  children: visitTickets
-                      .map(
-                        (ticket) => Column(
-                          children: [
-                            VisitHistoryCard(
-                              ticketId: ticket.id!,
-                              doctorName: ticket.doctor.name,
-                              doctorSpecialization:
-                                  ticket.doctor.specialization,
-                              hospitalName: ticket.doctor.hospital,
-                              visitDate: DateFormat(
-                                'dd MMMM yyyy',
-                                'id_ID',
-                              ).format(ticket.visitDate),
-                              visitStatus: ticket.status,
-                              chiefComplaint: ticket.chiefComplaint,
-                            ),
-                            const SizedBox(height: 16),
-                          ],
-                        ),
-                      )
-                      .toList(),
+                if (visitTickets.isEmpty) {
+                  return SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: const Center(
+                      heightFactor: 8,
+                      child: Text("Belum ada riwayat kunjungan"),
+                    ),
+                  );
+                }
+
+                return SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 24,
+                    horizontal: 4,
+                  ),
+                  child: Column(
+                    children: visitTickets.map((ticket) {
+                      return Column(
+                        children: [
+                          VisitHistoryCard(
+                            ticketId: ticket.id!,
+                            doctorName: ticket.doctor.name,
+                            doctorSpecialization: ticket.doctor.specialization,
+                            hospitalName: ticket.doctor.hospital,
+                            visitDate: DateFormat(
+                              'dd MMMM yyyy',
+                              'id_ID',
+                            ).format(ticket.visitDate),
+                            visitStatus: ticket.status,
+                            chiefComplaint: ticket.chiefComplaint,
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+                      );
+                    }).toList(),
+                  ),
                 );
               },
             ),

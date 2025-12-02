@@ -10,6 +10,10 @@ class DoctorListPage extends StatefulWidget {
 }
 
 class _DoctorListPageState extends State<DoctorListPage> {
+  Future<void> _refresh() async {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,40 +29,46 @@ class _DoctorListPageState extends State<DoctorListPage> {
         ),
       ),
       body: SafeArea(
-        child: FutureBuilder(
-          future: DoctorService().getAllDoctors(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
+        child: RefreshIndicator(
+          color: Colors.blue,
+          backgroundColor: Colors.white,
+          onRefresh: _refresh,
 
-            if (snapshot.hasError) {
-              return Center(child: Text("Error: ${snapshot.error}"));
-            }
+          child: FutureBuilder(
+            future: DoctorService().getAllDoctors(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-            final doctors = snapshot.data ?? [];
+              if (snapshot.hasError) {
+                return Center(child: Text("Error: ${snapshot.error}"));
+              }
 
-            return SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                children: doctors.map((doctor) {
-                  return Column(
-                    children: [
-                      DoctorListCard(
-                        doctor.id.toString(),
-                        doctor.photoUrl.toString(),
-                        doctor.name,
-                        doctor.specialization,
-                        doctor.hospital,
-                      ),
-                      const SizedBox(height: 16),
-                    ],
-                  );
-                }).toList(),
-              ),
-            );
-          },
+              final doctors = snapshot.data ?? [];
+
+              return SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  children: doctors.map((doctor) {
+                    return Column(
+                      children: [
+                        DoctorListCard(
+                          doctor.id.toString(),
+                          doctor.photoUrl.toString(),
+                          doctor.name,
+                          doctor.specialization,
+                          doctor.hospital,
+                        ),
+                        const SizedBox(height: 16),
+                      ],
+                    );
+                  }).toList(),
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
