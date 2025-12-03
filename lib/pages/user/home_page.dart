@@ -103,7 +103,6 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                         Container(
-                          padding: const EdgeInsets.all(8),
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.white24,
