@@ -108,10 +108,9 @@ class _HomePageState extends State<HomePage> {
                             shape: BoxShape.circle,
                             color: Colors.white24,
                           ),
-                          child: const Icon(
-                            Icons.person,
-                            color: Colors.white,
-                            size: 24,
+                          child: IconButton(
+                            icon: const Icon(Icons.person, color: Colors.white,size: 24),
+                            onPressed: () => goToProfilePage(context),
                           ),
                         ),
                       ],

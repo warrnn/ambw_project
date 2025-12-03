@@ -136,7 +136,7 @@ class _PatientHistoryPageState extends State<PatientHistoryPage> {
                         Colors.orange.shade700,
                       ),
                       _buildSummaryCard(
-                        'Confirmed',
+                        'Status Confirmed',
                         confirmed,
                         Colors.green.shade50,
                         Colors.green.shade700,
