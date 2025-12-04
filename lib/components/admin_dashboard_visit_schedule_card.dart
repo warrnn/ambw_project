@@ -87,11 +87,13 @@ class _AdminDashboardVisitScheduleCardState
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(
-                          widget.doctorSpecialization,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[600],
+                        Expanded(
+                          child: Text(
+                            widget.doctorSpecialization,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[600],
+                            ),
                           ),
                         ),
                       ],
