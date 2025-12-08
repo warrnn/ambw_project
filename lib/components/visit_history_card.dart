@@ -7,7 +7,7 @@ class VisitHistoryCard extends StatefulWidget {
   final String doctorSpecialization;
   final String hospitalName;
   final String visitDate;
-  final bool visitStatus;
+  final String visitStatus;
   final String chiefComplaint;
 
   const VisitHistoryCard({
@@ -30,7 +30,13 @@ class _VisitHistoryCardState extends State<VisitHistoryCard> {
 
   @override
   Widget build(BuildContext context) {
-    _statusBackgroundColor = widget.visitStatus ? Colors.green : Colors.amber;
+    if (widget.visitStatus == 'Pending') {
+      _statusBackgroundColor = Colors.amber;
+    } else if (widget.visitStatus == 'Konfirmasi') {
+      _statusBackgroundColor = Colors.green;
+    } else if (widget.visitStatus == 'Tolak') {
+      _statusBackgroundColor = Colors.red;
+    }
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -68,7 +74,7 @@ class _VisitHistoryCardState extends State<VisitHistoryCard> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  widget.visitStatus ? 'Dikonfirmasi' : 'Pending',
+                  widget.visitStatus,
                   style: TextStyle(fontSize: 12, color: Colors.white),
                 ),
               ),
@@ -142,7 +148,7 @@ class _VisitHistoryCardState extends State<VisitHistoryCard> {
               ],
             ),
           ),
-          if (!widget.visitStatus) ...[
+          if (widget.visitStatus == 'Pending') ...[
             const SizedBox(height: 16),
             Container(
               color: const Color.fromARGB(120, 158, 158, 158),

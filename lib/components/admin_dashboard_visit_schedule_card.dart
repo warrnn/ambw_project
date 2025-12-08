@@ -7,7 +7,7 @@ class AdminDashboardVisitScheduleCard extends StatefulWidget {
   final String doctorSpecialization;
   final String hospitalName;
   final String visitDate;
-  final bool visitStatus;
+  final String visitStatus;
 
   const AdminDashboardVisitScheduleCard({
     super.key,
@@ -30,7 +30,13 @@ class _AdminDashboardVisitScheduleCardState
 
   @override
   Widget build(BuildContext context) {
-    _statusBackgroundColor = widget.visitStatus ? Colors.green : Colors.amber;
+    if (widget.visitStatus == 'Pending') {
+      _statusBackgroundColor = Colors.amber;
+    } else if (widget.visitStatus == 'Konfirmasi') {
+      _statusBackgroundColor = Colors.green;
+    } else if (widget.visitStatus == 'Tolak') {
+      _statusBackgroundColor = Colors.red;
+    }
 
     void goToQRScanPage(BuildContext context) {
       Navigator.push(
@@ -135,7 +141,7 @@ class _AdminDashboardVisitScheduleCardState
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  widget.visitStatus ? 'Dikonfimasi' : 'Pending',
+                  widget.visitStatus,
                   style: TextStyle(fontSize: 12, color: Colors.white),
                 ),
               ),

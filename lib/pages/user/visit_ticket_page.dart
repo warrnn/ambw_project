@@ -48,6 +48,7 @@ class _VisitTicketPageState extends State<VisitTicketPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: Colors.blue, // Opsional: untuk menutupi area di luar safearea jika perlu
       resizeToAvoidBottomInset: true,
       body: _ticket == null
           ? Center(child: CircularProgressIndicator(color: Colors.blue))
@@ -88,6 +89,7 @@ class _VisitTicketPageState extends State<VisitTicketPage> {
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
+                        textAlign: TextAlign.center, // Tambahkan ini jaga-jaga
                       ),
                       SizedBox(height: 16),
                       Text(
@@ -105,6 +107,7 @@ class _VisitTicketPageState extends State<VisitTicketPage> {
                         ),
                         child: Column(
                           children: [
+                            // --- BAGIAN DOKTER (DIPERBAIKI) ---
                             Container(
                               padding: EdgeInsets.symmetric(
                                 vertical: 12,
@@ -125,28 +128,39 @@ class _VisitTicketPageState extends State<VisitTicketPage> {
                                     ),
                                   ),
                                   SizedBox(width: 16),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Dokter',
-                                        style: TextStyle(
-                                          color: Colors.grey[600],
+                                  // Tambahkan Expanded di sini agar teks tidak overflow ke kanan
+                                  Expanded( 
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Dokter',
+                                          style: TextStyle(
+                                            color: Colors.grey[600],
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(height: 4),
-                                      Text(
-                                        _ticket!.doctor.name,
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                      SizedBox(height: 4),
-                                      Text(_ticket!.doctor.specialization),
-                                    ],
+                                        SizedBox(height: 4),
+                                        Text(
+                                          _ticket!.doctor.name,
+                                          style: TextStyle(fontSize: 16),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        SizedBox(height: 4),
+                                        Text(
+                                          _ticket!.doctor.specialization,
+                                          maxLines: 1, // Tambahkan maxLines jaga-jaga
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
+                            
+                            // --- BAGIAN KELUHAN (SUDAH BENAR) ---
                             Container(
                               padding: EdgeInsets.symmetric(
                                 vertical: 12,
@@ -191,6 +205,8 @@ class _VisitTicketPageState extends State<VisitTicketPage> {
                                 ],
                               ),
                             ),
+
+                            // --- BAGIAN TANGGAL (DIPERBAIKI) ---
                             Container(
                               padding: EdgeInsets.symmetric(
                                 vertical: 12,
@@ -211,28 +227,33 @@ class _VisitTicketPageState extends State<VisitTicketPage> {
                                     ),
                                   ),
                                   SizedBox(width: 16),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Tanggal Kunjungan',
-                                        style: TextStyle(
-                                          color: Colors.grey[600],
+                                  // Tambahkan Expanded di sini juga
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Tanggal Kunjungan',
+                                          style: TextStyle(
+                                            color: Colors.grey[600],
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        DateFormat(
-                                          'dd MMMM yyyy',
-                                        ).format(_ticket!.visitDate),
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                    ],
+                                        Text(
+                                          DateFormat(
+                                            'dd MMMM yyyy',
+                                          ).format(_ticket!.visitDate),
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
                             SizedBox(height: 8),
+                            
+                            // --- BAGIAN STATUS ---
                             Container(
                               padding: EdgeInsets.symmetric(
                                 vertical: 12,
@@ -253,9 +274,7 @@ class _VisitTicketPageState extends State<VisitTicketPage> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Text(
-                                      _ticket!.status
-                                          ? 'Dikonfirmasi'
-                                          : 'Pending',
+                                      _ticket!.status,
                                       style: TextStyle(color: Colors.white),
                                     ),
                                   ),

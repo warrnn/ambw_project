@@ -5,7 +5,7 @@ class VisitTicket {
   final Doctor doctor;
   final String chiefComplaint;
   final DateTime visitDate;
-  final bool status;
+  final String status;
   final String userId;
 
   VisitTicket({

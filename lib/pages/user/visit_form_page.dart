@@ -39,7 +39,7 @@ class _VisitFormPageState extends State<VisitFormPage> {
         widget.doctorId,
         chiefComplaint,
         visitDate.toString(),
-        false,
+        'Pending',
       );
 
       Navigator.push(

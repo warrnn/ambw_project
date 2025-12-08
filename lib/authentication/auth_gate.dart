@@ -1,4 +1,3 @@
-import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:telehealth/authentication/auth_service.dart';
 import 'package:telehealth/pages/admin/dashboard_page.dart';
@@ -31,8 +30,8 @@ class AuthGate extends StatelessWidget {
           return LoginPage();
         }
 
-        return FutureBuilder<List<String>>(
-          future: adminService.getAllAdmins(),
+        return FutureBuilder<bool>(
+          future: adminService.checkUserIsAdmin(session.user.id),
           builder: (context, adminSnapshot) {
             if (!adminSnapshot.hasData) {
               return const Scaffold(
@@ -40,13 +39,9 @@ class AuthGate extends StatelessWidget {
               );
             }
 
-            final adminIds = adminSnapshot.data!;
-            final userId = session.user.id;
+            final isAdmin = adminSnapshot.data!;
 
-            developer.log('adminIds: $adminIds');
-            developer.log('logged userId: $userId');
-
-            if (adminIds.contains(userId)) {
+            if (isAdmin) {
               return DashboardPage();
             }
 

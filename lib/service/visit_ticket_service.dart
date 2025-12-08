@@ -9,7 +9,7 @@ class VisitTicketService {
       final response = await supabase
           .from('visit_tickets')
           .select('*, doctor:doctor_id(*)')
-          .eq('status', false)
+          .eq('status', 'Pending')
           .eq('user_id', supabase.auth.currentUser!.id)
           .order('visit_date', ascending: true);
       // print(response);
@@ -26,7 +26,7 @@ class VisitTicketService {
           .from('visit_tickets')
           .select('*, doctor:doctor_id(*)')
           .gte('visit_date', DateTime.now().toString())
-          .eq('status', true)
+          .eq('status', 'Konfirmasi')
           .eq('user_id', supabase.auth.currentUser!.id)
           .order('visit_date', ascending: true);
       // print(response);
@@ -54,7 +54,7 @@ class VisitTicketService {
     String doctorId,
     String chiefComplaint,
     String visitDate,
-    bool status,
+    String status,
   ) async {
     try {
       final response = await supabase
@@ -97,7 +97,7 @@ class VisitTicketService {
       final response = await supabase
           .from('visit_tickets')
           .select('*, doctor:doctor_id(*)')
-          .eq('status', false)
+          .eq('status', 'Pending')
           .order('visit_date', ascending: true);
       // print(response);
       return response.map((json) => VisitTicket.fromJson(json)).toList();
@@ -111,7 +111,7 @@ class VisitTicketService {
       final response = await supabase
           .from('visit_tickets')
           .select('*, doctor:doctor_id(*)')
-          .eq('status', true)
+          .eq('status', 'Konfirmasi')
           .order('visit_date', ascending: true);
       // print(response);
       return response.map((json) => VisitTicket.fromJson(json)).toList();
@@ -124,7 +124,7 @@ class VisitTicketService {
     try {
       await supabase
           .from('visit_tickets')
-          .update({'status': true})
+          .update({'status': 'Konfirmasi'})
           .eq('id', id);
     } catch (e) {
       throw Exception('Failed to update visit ticket status: $e');
@@ -152,7 +152,7 @@ class VisitTicketService {
       final response = await supabase
           .from('visit_tickets')
           .select('*, doctor:doctor_id(*)')
-          .eq('status', true)
+          .eq('status', 'Konfirmasi')
           .eq('user_id', supabase.auth.currentUser!.id)
           .order('visit_date', ascending: false);
 
@@ -168,7 +168,7 @@ class VisitTicketService {
       final response = await supabase
           .from('visit_tickets')
           .select('*, doctor:doctor_id(*)')
-          .eq('status', true)
+          .eq('status', 'Konfirmasi')
           .order('visit_date', ascending: false);
 
       return response.map((json) => VisitTicket.fromJson(json)).toList();
@@ -183,7 +183,7 @@ class VisitTicketService {
       final response = await supabase
           .from('visit_tickets')
           .select('*, doctor:doctor_id(*)')
-          .eq('status', true)
+          .eq('status', 'Konfirmasi')
           .eq('user_id', userId)
           .order('visit_date', ascending: false);
 
@@ -199,7 +199,7 @@ class VisitTicketService {
       final response = await supabase
           .from('visit_tickets')
           .select('*, doctor:doctor_id(*)')
-          .eq('status', true)
+          .eq('status', 'Konfirmasi')
           .eq('doctor_id', doctorId)
           .order('visit_date', ascending: false);
 
@@ -214,7 +214,7 @@ class VisitTicketService {
     try {
       await supabase
           .from('visit_tickets')
-          .update({'status': true})
+          .update({'status': 'Konfirmasi'})
           .eq('id', ticketId);
     } catch (e) {
       throw Exception('Failed to complete visit ticket: $e');
@@ -230,7 +230,7 @@ class VisitTicketService {
       final response = await supabase
           .from('visit_tickets')
           .select('*, doctor:doctor_id(*)')
-          .eq('status', true)
+          .eq('status', 'Konfirmasi')
           .eq('user_id', supabase.auth.currentUser!.id)
           .gte('visit_date', startDate)
           .lte('visit_date', endDate)
